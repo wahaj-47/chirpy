@@ -6,5 +6,10 @@ POST http://localhost:8080/api/users
 Content-Type: application/json
 
 {
-  "email": "waleedhussain_7715@gmail.com"
+  "email": "test@email.com"
 }
+
+###
+
+POST http://localhost:8080/admin/reset
+Content-Type: application/json
