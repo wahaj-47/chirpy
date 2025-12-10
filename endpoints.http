@@ -15,6 +15,10 @@ GET http://localhost:8080/api/chirps
 
 ###
 
+GET http://localhost:8080/api/chirps/39ba1a9a-2313-418f-b3cc-6481f6fa901a
+
+###
+
 POST http://localhost:8080/api/chirps
 Content-Type: application/json
 
