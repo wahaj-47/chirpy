@@ -12,7 +12,7 @@ type User struct {
 	Email     string `json:"email"`
 }
 
-func (cfg *apiConfig) handleCreateUser(w http.ResponseWriter, r *http.Request) {
+func (cfg *apiConfig) handlerCreateUser(w http.ResponseWriter, r *http.Request) {
 	type request struct {
 		Email string `json:"email"`
 	}
@@ -37,7 +37,7 @@ func (cfg *apiConfig) handleCreateUser(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
-func (cfg *apiConfig) handleGetUsers(w http.ResponseWriter, r *http.Request) {
+func (cfg *apiConfig) handlerGetUsers(w http.ResponseWriter, r *http.Request) {
 	users, err := cfg.dbQueries.GetUsers(r.Context())
 
 	if err != nil {

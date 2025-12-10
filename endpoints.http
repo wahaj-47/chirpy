@@ -11,5 +11,19 @@ Content-Type: application/json
 
 ###
 
+GET http://localhost:8080/api/chirps
+
+###
+
+POST http://localhost:8080/api/chirps
+Content-Type: application/json
+
+{
+  "body": "Chirpy is awesome",
+  "user_id": "34e3148a-18c0-4d1d-b383-a3b44ba2c94a"
+}
+
+###
+
 POST http://localhost:8080/admin/reset
 Content-Type: application/json
