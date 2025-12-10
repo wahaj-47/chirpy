@@ -2,6 +2,10 @@ GET http://localhost:8080/api/users
 
 ###
 
+GET http://localhost:8080/api/users/34e3148a-18c0-4d1d-b383-a3b44ba2c94a
+
+###
+
 POST http://localhost:8080/api/users
 Content-Type: application/json
 
