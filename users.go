@@ -1,8 +1,11 @@
 package main
 
 import (
+	"chirpy/internal/auth"
+	"chirpy/internal/database"
 	"database/sql"
 	"encoding/json"
+	"log"
 	"net/http"
 
 	"github.com/google/uuid"
@@ -17,7 +20,8 @@ type User struct {
 
 func (cfg *apiConfig) handlerCreateUser(w http.ResponseWriter, r *http.Request) {
 	type request struct {
-		Email string `json:"email"`
+		Email    string `json:"email"`
+		Password string `json:"password"`
 	}
 
 	req := request{}
@@ -26,8 +30,27 @@ func (cfg *apiConfig) handlerCreateUser(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
-	user, err := cfg.dbQueries.CreateUser(r.Context(), req.Email)
+	if req.Email == "" {
+		respondWithError(w, http.StatusBadRequest, "Email is required")
+		return
+	}
+	if req.Password == "" {
+		respondWithError(w, http.StatusBadRequest, "Password is required")
+		return
+	}
+
+	hashedPassword, err := auth.HashPassword(req.Password)
 	if err != nil {
+		respondWithError(w, http.StatusInternalServerError, "Something went wrong")
+		return
+	}
+
+	user, err := cfg.dbQueries.CreateUser(r.Context(), database.CreateUserParams{
+		Email:          req.Email,
+		HashedPassword: hashedPassword,
+	})
+	if err != nil {
+		log.Printf("Failed to create user: %s", err)
 		respondWithError(w, http.StatusInternalServerError, "Failed to create user")
 		return
 	}
