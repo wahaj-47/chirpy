@@ -17,6 +17,7 @@ type apiConfig struct {
 	platform       string
 	fileserverHits atomic.Int32
 	dbQueries      *database.Queries
+	tokenSecret    string
 }
 
 func main() {
@@ -24,6 +25,7 @@ func main() {
 
 	platform := os.Getenv("PLATFORM")
 	dbUrl := os.Getenv("DB_URL")
+	tokenSecret := os.Getenv("TOKEN_SECRET")
 	db, err := sql.Open("postgres", dbUrl)
 	if err != nil {
 		log.Fatal(err)
@@ -37,6 +39,7 @@ func main() {
 		platform:       platform,
 		fileserverHits: atomic.Int32{},
 		dbQueries:      dbQueries,
+		tokenSecret:    tokenSecret,
 	}
 
 	mux := http.NewServeMux()
