@@ -13,6 +13,12 @@ SELECT *
 FROM users
 WHERE email = $1;
 
+-- name: GetUserByRefreshToken :one
+SELECT *
+FROM users u
+JOIN refresh_tokens r ON u.id = r.user_id
+WHERE r.token = $1 AND r.revoked_at IS NULL AND r.expires_at > NOW();
+
 -- name: CreateUser :one
 INSERT INTO users (email, hashed_password)
 VALUES (

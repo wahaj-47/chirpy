@@ -158,6 +158,15 @@ func (cfg *apiConfig) handlerLogin(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	refreshTokenBinding := database.CreateRefreshTokenParams{
+		Token:  refresh_token,
+		UserID: user.ID,
+	}
+	if _, err := cfg.dbQueries.CreateRefreshToken(r.Context(), refreshTokenBinding); err != nil {
+		respondWithError(w, http.StatusInternalServerError, "Refresh token creation failed")
+		return
+	}
+
 	respondWithJSON(w, http.StatusAccepted, response{
 		User: User{
 			ID:        user.ID.String(),
@@ -168,4 +177,52 @@ func (cfg *apiConfig) handlerLogin(w http.ResponseWriter, r *http.Request) {
 		Token:        token,
 		RefreshToken: refresh_token,
 	})
+}
+
+func (cfg *apiConfig) handlerRefresh(w http.ResponseWriter, r *http.Request) {
+	type response struct {
+		Token string `json:"token"`
+	}
+
+	refreshToken, err := auth.GetBearerToken(r.Header)
+	if err != nil {
+		respondWithError(w, http.StatusBadRequest, "Invalid refresh token")
+		return
+	}
+
+	user, err := cfg.dbQueries.GetUserByRefreshToken(r.Context(), refreshToken)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			respondWithError(w, http.StatusUnauthorized, "Unauthorized")
+			return
+		}
+
+		respondWithError(w, http.StatusInternalServerError, "Something went wrong")
+		return
+	}
+
+	token, err := auth.MakeJWT(user.ID, cfg.tokenSecret, time.Hour)
+	if err != nil {
+		respondWithError(w, http.StatusInternalServerError, "JWT generation failed")
+		return
+	}
+
+	respondWithJSON(w, http.StatusOK, response{
+		Token: token,
+	})
+}
+
+func (cfg *apiConfig) handlerRevokeRefreshToken(w http.ResponseWriter, r *http.Request) {
+	refreshToken, err := auth.GetBearerToken(r.Header)
+	if err != nil {
+		respondWithError(w, http.StatusBadRequest, "Invalid refresh token")
+		return
+	}
+
+	if err := cfg.dbQueries.RevokeRefreshToken(r.Context(), refreshToken); err != nil {
+		respondWithError(w, http.StatusInternalServerError, "Something went wrong")
+		return
+	}
+
+	respondWithJSON(w, http.StatusNoContent, nil)
 }

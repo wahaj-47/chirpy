@@ -7,6 +7,8 @@ package database
 
 import (
 	"context"
+	"database/sql"
+	"time"
 
 	"github.com/google/uuid"
 )
@@ -72,6 +74,46 @@ func (q *Queries) GetUserByEmail(ctx context.Context, email string) (User, error
 		&i.CreatedAt,
 		&i.UpdatedAt,
 		&i.HashedPassword,
+	)
+	return i, err
+}
+
+const getUserByRefreshToken = `-- name: GetUserByRefreshToken :one
+SELECT id, email, u.created_at, u.updated_at, hashed_password, token, user_id, r.created_at, r.updated_at, expires_at, revoked_at
+FROM users u
+JOIN refresh_tokens r ON u.id = r.user_id
+WHERE r.token = $1 AND r.revoked_at IS NULL AND r.expires_at > NOW()
+`
+
+type GetUserByRefreshTokenRow struct {
+	ID             uuid.UUID
+	Email          string
+	CreatedAt      time.Time
+	UpdatedAt      time.Time
+	HashedPassword string
+	Token          string
+	UserID         uuid.UUID
+	CreatedAt_2    time.Time
+	UpdatedAt_2    time.Time
+	ExpiresAt      time.Time
+	RevokedAt      sql.NullTime
+}
+
+func (q *Queries) GetUserByRefreshToken(ctx context.Context, token string) (GetUserByRefreshTokenRow, error) {
+	row := q.db.QueryRowContext(ctx, getUserByRefreshToken, token)
+	var i GetUserByRefreshTokenRow
+	err := row.Scan(
+		&i.ID,
+		&i.Email,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+		&i.HashedPassword,
+		&i.Token,
+		&i.UserID,
+		&i.CreatedAt_2,
+		&i.UpdatedAt_2,
+		&i.ExpiresAt,
+		&i.RevokedAt,
 	)
 	return i, err
 }
