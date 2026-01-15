@@ -6,6 +6,17 @@ GET http://localhost:8080/api/users/34e3148a-18c0-4d1d-b383-a3b44ba2c94a
 
 ###
 
+PUT http://localhost:8080/api/users
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJjaGlycHkiLCJzdWIiOiJlMTFjZGE4My1hNmIyLTQwMzUtOGM0My00NzRhZjRjNWVmZWIiLCJleHAiOjE3Njg0NTkxOTAsImlhdCI6MTc2ODQ1NTU5MH0.KCRNYDBupESMAM9_9rya72ZeCnHANUnCcAmNLrQT6-4
+
+{
+  "email": "test@email.com",
+  "password": "test"
+}
+
+###
+
 POST http://localhost:8080/api/users
 Content-Type: application/json
 
