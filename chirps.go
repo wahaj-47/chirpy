@@ -120,6 +120,44 @@ func (cfg *apiConfig) handlerCreateChirp(w http.ResponseWriter, r *http.Request)
 	})
 }
 
+func (cfg *apiConfig) handlerDeleteChirp(w http.ResponseWriter, r *http.Request) {
+	token, err := auth.GetBearerToken(r.Header)
+	if err != nil {
+		respondWithError(w, http.StatusUnauthorized, "Unauthorized")
+		return
+	}
+
+	userId, err := auth.ValidateJWT(token, cfg.tokenSecret)
+	if err != nil {
+		respondWithError(w, http.StatusUnauthorized, "Unauthorized")
+		return
+	}
+
+	chirpID := r.PathValue("chirpID")
+	chirpUUID, err := uuid.Parse(chirpID)
+	if err != nil {
+		respondWithError(w, http.StatusBadRequest, "Invalid chirp id")
+		return
+	}
+
+	params := database.DeleteChirpParams{
+		ID:     chirpUUID,
+		UserID: userId,
+	}
+	err = cfg.dbQueries.DeleteChirp(r.Context(), params)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			respondWithError(w, http.StatusNotFound, "Chirp not found")
+			return
+		}
+
+		respondWithError(w, http.StatusInternalServerError, "Something went wrong")
+		return
+	}
+
+	respondWithJSON(w, http.StatusOK, nil)
+}
+
 func censor(s string) string {
 	curses := map[string]bool{"kerfuffle": true, "sharbert": true, "fornax": true}
 	words := strings.Split(s, " ")

@@ -106,6 +106,7 @@ func (cfg *apiConfig) handlerUpdateUser(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
+	w.Header().Set("Content-Type", "application/json")
 	respondWithJSON(w, http.StatusOK, User{
 		ID:        user.ID.String(),
 		CreatedAt: user.CreatedAt.String(),
@@ -131,8 +132,9 @@ func (cfg *apiConfig) handlerGetUsers(w http.ResponseWriter, r *http.Request) {
 			Email:     user.Email,
 		}
 	}
+
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(res)
+	respondWithJSON(w, http.StatusOK, res)
 }
 
 func (cfg *apiConfig) handlerGetUser(w http.ResponseWriter, r *http.Request) {
