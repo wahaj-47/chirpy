@@ -13,10 +13,11 @@ import (
 )
 
 type User struct {
-	ID        string `json:"id"`
-	CreatedAt string `json:"created_at"`
-	UpdatedAt string `json:"updated_at"`
-	Email     string `json:"email"`
+	ID          string `json:"id"`
+	CreatedAt   string `json:"created_at"`
+	UpdatedAt   string `json:"updated_at"`
+	Email       string `json:"email"`
+	IsChirpyRed bool   `json:"is_chirpy_red"`
 }
 
 func (cfg *apiConfig) handlerCreateUser(w http.ResponseWriter, r *http.Request) {
@@ -57,10 +58,11 @@ func (cfg *apiConfig) handlerCreateUser(w http.ResponseWriter, r *http.Request) 
 	}
 
 	respondWithJSON(w, http.StatusCreated, User{
-		ID:        user.ID.String(),
-		CreatedAt: user.CreatedAt.String(),
-		UpdatedAt: user.UpdatedAt.String(),
-		Email:     user.Email,
+		ID:          user.ID.String(),
+		CreatedAt:   user.CreatedAt.String(),
+		UpdatedAt:   user.UpdatedAt.String(),
+		Email:       user.Email,
+		IsChirpyRed: user.IsChirpyRed,
 	})
 }
 
@@ -108,10 +110,11 @@ func (cfg *apiConfig) handlerUpdateUser(w http.ResponseWriter, r *http.Request) 
 
 	w.Header().Set("Content-Type", "application/json")
 	respondWithJSON(w, http.StatusOK, User{
-		ID:        user.ID.String(),
-		CreatedAt: user.CreatedAt.String(),
-		UpdatedAt: user.UpdatedAt.String(),
-		Email:     user.Email,
+		ID:          user.ID.String(),
+		CreatedAt:   user.CreatedAt.String(),
+		UpdatedAt:   user.UpdatedAt.String(),
+		Email:       user.Email,
+		IsChirpyRed: user.IsChirpyRed,
 	})
 }
 
@@ -126,10 +129,11 @@ func (cfg *apiConfig) handlerGetUsers(w http.ResponseWriter, r *http.Request) {
 	res := make([]User, len(users))
 	for i, user := range users {
 		res[i] = User{
-			ID:        user.ID.String(),
-			CreatedAt: user.CreatedAt.String(),
-			UpdatedAt: user.UpdatedAt.String(),
-			Email:     user.Email,
+			ID:          user.ID.String(),
+			CreatedAt:   user.CreatedAt.String(),
+			UpdatedAt:   user.UpdatedAt.String(),
+			Email:       user.Email,
+			IsChirpyRed: user.IsChirpyRed,
 		}
 	}
 
@@ -157,10 +161,11 @@ func (cfg *apiConfig) handlerGetUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	respondWithJSON(w, http.StatusOK, User{
-		ID:        user.ID.String(),
-		CreatedAt: user.CreatedAt.String(),
-		UpdatedAt: user.UpdatedAt.String(),
-		Email:     user.Email,
+		ID:          user.ID.String(),
+		CreatedAt:   user.CreatedAt.String(),
+		UpdatedAt:   user.UpdatedAt.String(),
+		Email:       user.Email,
+		IsChirpyRed: user.IsChirpyRed,
 	})
 }
 
@@ -222,10 +227,11 @@ func (cfg *apiConfig) handlerLogin(w http.ResponseWriter, r *http.Request) {
 
 	respondWithJSON(w, http.StatusAccepted, response{
 		User: User{
-			ID:        user.ID.String(),
-			CreatedAt: user.CreatedAt.String(),
-			UpdatedAt: user.UpdatedAt.String(),
-			Email:     user.Email,
+			ID:          user.ID.String(),
+			CreatedAt:   user.CreatedAt.String(),
+			UpdatedAt:   user.UpdatedAt.String(),
+			Email:       user.Email,
+			IsChirpyRed: user.IsChirpyRed,
 		},
 		Token:        token,
 		RefreshToken: refresh_token,
