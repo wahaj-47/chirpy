@@ -1,55 +1,37 @@
-# Compiled class file
-*.class
-
-# Log file
-*.log
-
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
-
-# Package Files #
-*.jar
-*.war
-*.ear
-*.zip
-*.tar.gz
-
-# Virtual machine crash logs, see http://www.java.com
-hs_err_pid*
-
-# Maven
-target/
-pom.xml.tag
-pom.xml.next
-pom.xml.bak
-pom.xml.versions
-pom.xml.stacktrace
-maven-eclipse.xml
-maven-compiler-plugin-surefire.xml
-maven-status
-apidocs/
-surefire-reports/
-target/content-test/
-
-# Gradle
-.gradle/
+HELP.md
+.gradle
 build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
 
-# Eclipse
+### STS ###
+.apt_generated
 .classpath
+.factorypath
 .project
-.settings/
+.settings
+.springBeans
+.sts4-cache
 bin/
-tmp/
-*.tmp
-*.bak
-*.swp
+!**/src/main/**/bin/
+!**/src/test/**/bin/
 
-# IntelliJ
-.idea/
+### IntelliJ IDEA ###
+.idea
+*.iws
 *.iml
 *.ipr
-*.iws
+out/
+!**/src/main/**/out/
+!**/src/test/**/out/
 
-# Mac
-.DS_Store
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+### VS Code ###
+.vscode/
