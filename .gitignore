@@ -1,32 +1,55 @@
-# If you prefer the allow list template instead of the deny list, see community template:
-# https://github.com/github/gitignore/blob/main/community/Golang/Go.AllowList.gitignore
-#
-# Binaries for programs and plugins
-*.exe
-*.exe~
-*.dll
-*.so
-*.dylib
+# Compiled class file
+*.class
 
-# Test binary, built with `go test -c`
-*.test
+# Log file
+*.log
 
-# Code coverage profiles and other test artifacts
-*.out
-coverage.*
-*.coverprofile
-profile.cov
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
 
-# Dependency directories (remove the comment below to include it)
-# vendor/
+# Package Files #
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
 
-# Go workspace file
-go.work
-go.work.sum
+# Virtual machine crash logs, see http://www.java.com
+hs_err_pid*
 
-# env file
-.env
+# Maven
+target/
+pom.xml.tag
+pom.xml.next
+pom.xml.bak
+pom.xml.versions
+pom.xml.stacktrace
+maven-eclipse.xml
+maven-compiler-plugin-surefire.xml
+maven-status
+apidocs/
+surefire-reports/
+target/content-test/
 
-# Editor/IDE
-# .idea/
-# .vscode/
+# Gradle
+.gradle/
+build/
+
+# Eclipse
+.classpath
+.project
+.settings/
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+
+# IntelliJ
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Mac
+.DS_Store
